@@ -24,10 +24,6 @@ git clone https://github.com/NotBadSlime/genshin-bp.git
 
 群内发送 `#bp帮助` 查看说明图（长图）。
 
-## 作者
-
-NotBadSlime
-
 ## 仓库
 
 https://github.com/NotBadSlime/genshin-bp
