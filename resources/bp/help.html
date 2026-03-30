@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <title>原神 BP 帮助</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+      background: linear-gradient(165deg, #0d0d1a 0%, #1a1a2e 35%, #16213e 70%, #0f3460 100%);
+      color: #e8eaef;
+      padding: 28px 24px 32px;
+      min-width: 640px;
+      max-width: 680px;
+    }
+    .wrap { margin: 0 auto; }
+    .hero {
+      text-align: center;
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      display: block;
+      width: 120px;
+      height: 3px;
+      margin: 14px auto 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #e94560, #feca57, #a8d8ea, transparent);
+    }
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 0%, #a8d8ea 45%, #e94560 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #8b9cb3;
+      letter-spacing: 1px;
+    }
+    .hero .author {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #6b7c8f;
+      letter-spacing: 1px;
+    }
+    .card {
+      background: linear-gradient(145deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.03) 100%);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      padding: 14px 16px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+      box-shadow: 0 2px 8px rgba(233, 69, 96, .35);
+    }
+    .card:nth-child(3) .badge { background: linear-gradient(135deg, #feca57 0%, #d4a017 100%); box-shadow: 0 2px 8px rgba(254, 202, 87, .25); }
+    .card:nth-child(4) .badge { background: linear-gradient(135deg, #a8d8ea 0%, #5d9cec 100%); box-shadow: 0 2px 8px rgba(93, 156, 236, .2); }
+    .card:nth-child(5) .badge { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+    .card:nth-child(6) .badge { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+    .card:nth-child(7) .badge { background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%); }
+    .card-head h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f0f4f8;
+      letter-spacing: 1px;
+    }
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .card li {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #c5cdd8;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .card li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #e94560;
+      font-size: 11px;
+      top: 2px;
+    }
+    kbd, .cmd {
+      display: inline-block;
+      font-family: "Consolas", "Monaco", monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      margin: 0 2px;
+      border-radius: 6px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #feca57;
+    }
+    .note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(168, 216, 234, .08);
+      border: 1px solid rgba(168, 216, 234, .2);
+      font-size: 12px;
+      line-height: 1.65;
+      color: #a8d8ea;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 11px;
+      color: #5a6a7d;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>原神 · BP 使用指南</h1>
+    <p>双人禁用 / 选用 · 群内指令说明</p>
+    <p class="author">作者 · NotBadSlime</p>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="badge">1</span>
+      <h2>开局</h2>
+    </div>
+    <ul>
+      <li>仅在<strong>群聊</strong>使用，发送 <span class="cmd">#开始bp</span> 并 <strong>@ 一名对手</strong>。</li>
+      <li>可选默认 ban：<span class="cmd">设置默认ban位 刻晴、迪卢克</span>（支持括号包裹写法）。</li>
+      <li>可选倒计时：<span class="cmd">时间 120s</span> 或 <span class="cmd">时间 120秒</span>；每次成功 ban/pick 后重新计时。</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="badge">2</span>
+      <h2>操作（自由顺序）</h2>
+    </div>
+    <ul>
+      <li>两名玩家<strong>可随时</strong>出手，无固定轮换。</li>
+      <li><span class="cmd">ban</span> / <span class="cmd">#ban</span> 角色名 · <span class="cmd">pick</span> / <span class="cmd">#pick</span> 角色名（大小写不敏感）。</li>
+      <li><strong>批量</strong>：多名角色用<strong>空格</strong>或 <strong>，、</strong>（中英文逗号、顿号）分隔，例如 <span class="cmd">ban刻晴 班尼特</span>、<span class="cmd">pick纳西妲,芙宁娜</span>；不写名字仍为单次随机。</li>
+      <li>支持<strong>喵喵内置别名</strong>与<strong>原神插件别名表</strong>（<span class="cmd">plugins/genshin</span> 的 <span class="cmd">defSet/role/name.yaml</span> 及群管配置的 <span class="cmd">config/role.name.yaml</span>），例如 <strong>奶奶</strong> 等价 <strong>茜特菈莉</strong>。</li>
+      <li>不写角色名时，从当前<strong>可用池随机</strong> ban 或 pick。</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="badge">3</span>
+      <h2>结束对局</h2>
+    </div>
+    <ul>
+      <li>发送 <span class="cmd">结束bp</span> 或 <span class="cmd">#结束bp</span>。</li>
+      <li>需双方 <strong>pick 数量相同</strong> 方可成功结束；否则对局继续。</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="badge">4</span>
+      <h2>超时与统计</h2>
+    </div>
+    <ul>
+      <li>计时到期会在群内提示 <strong>「已超时」</strong>；超时先进入待归属状态。</li>
+      <li>下一条<strong>成功</strong>的 ban/pick 由谁发送，即将本次待归属超时记到该玩家。</li>
+      <li>若通过 <span class="cmd">结束bp</span> 成功结束对局，此前<strong>尚未归属</strong>的超时<strong>一律不计入</strong>统计。</li>
+      <li>结束后会汇总已计入的：每位玩家超时<strong>次数</strong>与累计<strong>秒数</strong>。</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="badge">5</span>
+      <h2>战报图</h2>
+    </div>
+    <ul>
+      <li>开局与每次 ban/pick 后会生成<strong>战报图片</strong>，展示双方头像、各池与剩余角色。</li>
+    </ul>
+  </section>
+
+  <div class="note">
+    提示：若群开启「仅 @ 机器人 响应」，请 @ 机器人或使用群配置的前缀后再发指令。
+  </div>
+
+  <p class="footer">GENSHIN BP · YUNZAI PLUGIN · 作者 NotBadSlime</p>
+</div>
+</body>
+</html>

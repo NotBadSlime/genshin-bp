@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <title>原神 BP</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: #eee;
+      padding: 20px;
+      min-width: 720px;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #e94560;
+      letter-spacing: 2px;
+    }
+    .tip {
+      text-align: center;
+      font-size: 13px;
+      color: #a8d8ea;
+      margin-bottom: 16px;
+      min-height: 20px;
+    }
+    .players {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .player {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .subbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 24px;
+      font-size: 13px;
+      color: #b8c5d6;
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      background: rgba(0,0,0,.2);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .subbar .cd { color: #feca57; }
+    .player img.qq-face {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,.25);
+      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+      background: #1a2332;
+    }
+    .player .meta { flex: 1; }
+    .player .label { font-size: 12px; color: #889; margin-bottom: 4px; }
+    .player .name { font-size: 17px; font-weight: 600; }
+    .section {
+      background: rgba(0,0,0,.25);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .section h2 {
+      font-size: 14px;
+      color: #a8d8ea;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .char-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: flex-end;
+    }
+    .char-chip {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      max-width: 72px;
+    }
+    .char-chip .char-face {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,.15);
+      background: linear-gradient(145deg, #2a3548, #1e2636);
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    .char-chip .char-face--empty {
+      display: block;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px dashed rgba(255,255,255,.12);
+    }
+    .char-chip .char-name {
+      font-size: 11px;
+      line-height: 1.2;
+      color: #c5cdd8;
+      text-align: center;
+      word-break: break-all;
+      max-width: 72px;
+    }
+    .char-pool--dense .char-chip .char-face,
+    .char-pool--dense .char-chip .char-face--empty {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+    .char-pool--dense .char-chip { max-width: 56px; }
+    .char-pool--dense .char-chip .char-name { font-size: 10px; max-width: 56px; }
+    .row-label {
+      font-size: 12px;
+      color: #feca57;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .empty { color: #666; font-style: italic; }
+    .avail-note { font-size: 12px; color: #889; margin-top: 8px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>原神 · 双人 BP</h1>
+  <div class="tip">{{tip}}</div>
+
+  <div class="subbar">
+    <span>模式：自由出手（无固定顺序）</span>
+    {{if timeLimitSec}}
+    <span class="cd">操作时限 {{timeLimitSec}} 秒（每次操作后重置） · 当前剩余约 {{countdownSec}} 秒</span>
+    {{/if}}
+  </div>
+
+  <div class="players">
+    <div class="player">
+      <img class="qq-face" src="{{p1Face}}" alt=""/>
+      <div class="meta">
+        <div class="label">玩家 1</div>
+        <div class="name">{{p1Name}}</div>
+      </div>
+    </div>
+    <div class="player">
+      <img class="qq-face" src="{{p2Face}}" alt=""/>
+      <div class="meta">
+        <div class="label">玩家 2</div>
+        <div class="name">{{p2Name}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>默认禁用池</h2>
+    {{if defaultBanRows && defaultBanRows.length}}
+    <div class="char-pool">
+      {{each defaultBanRows item}}
+      <div class="char-chip">
+        {{if item.face}}
+        <img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>
+        {{else}}
+        <span class="char-face char-face--empty"></span>
+        {{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="empty">未设置</div>
+    {{/if}}
+  </div>
+
+  <div class="section">
+    <h2>玩家 1 — 禁用 / 选用</h2>
+    <div class="row-label">Ban</div>
+    {{if ban1Rows && ban1Rows.length}}
+    <div class="char-pool" style="margin-bottom:10px;">
+      {{each ban1Rows item}}
+      <div class="char-chip">
+        {{if item.face}}<img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>{{else}}<span class="char-face char-face--empty"></span>{{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}<div class="chips empty" style="margin-bottom:10px;">无</div>{{/if}}
+    <div class="row-label">Pick</div>
+    {{if pick1Rows && pick1Rows.length}}
+    <div class="char-pool">
+      {{each pick1Rows item}}
+      <div class="char-chip">
+        {{if item.face}}<img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>{{else}}<span class="char-face char-face--empty"></span>{{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}<div class="empty">无</div>{{/if}}
+  </div>
+
+  <div class="section">
+    <h2>玩家 2 — 禁用 / 选用</h2>
+    <div class="row-label">Ban</div>
+    {{if ban2Rows && ban2Rows.length}}
+    <div class="char-pool" style="margin-bottom:10px;">
+      {{each ban2Rows item}}
+      <div class="char-chip">
+        {{if item.face}}<img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>{{else}}<span class="char-face char-face--empty"></span>{{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}<div class="chips empty" style="margin-bottom:10px;">无</div>{{/if}}
+    <div class="row-label">Pick</div>
+    {{if pick2Rows && pick2Rows.length}}
+    <div class="char-pool">
+      {{each pick2Rows item}}
+      <div class="char-chip">
+        {{if item.face}}<img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>{{else}}<span class="char-face char-face--empty"></span>{{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}<div class="empty">无</div>{{/if}}
+  </div>
+
+  <div class="section">
+    <h2>可用池（未被 ban / pick）</h2>
+    {{if availableShowRows && availableShowRows.length}}
+    <div class="char-pool char-pool--dense">
+      {{each availableShowRows item}}
+      <div class="char-chip">
+        {{if item.face}}<img class="char-face" src="{{_miao_path}}{{item.face}}" alt=""/>{{else}}<span class="char-face char-face--empty"></span>{{/if}}
+        <span class="char-name">{{item.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <span class="empty">（空）</span>
+    {{/if}}
+    {{if availableMore > 0}}
+    <div class="avail-note">… 共 {{available.length}} 个角色，此处仅展示前 48 个 …</div>
+    {{/if}}
+  </div>
+</div>
+</body>
+</html>
